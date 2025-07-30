@@ -40,7 +40,7 @@ int main()
             ShowContact(&con);
             break;
             case SORT:
-            SortContact(&con);
+            SortByName(&con);
             break;
             case EXIT:
             printf("Out\n");
