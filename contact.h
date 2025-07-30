@@ -40,5 +40,5 @@ void ShowContact(const struct Contact *ps);
 void  DeleteContact(struct Contact *ps);
 void SearchContact(const struct Contact *ps);
 void ModifyContact(struct Contact *ps);
-void SortContact(struct Contact *ps);
+void SortByName(struct Contact *ps);
 #endif
