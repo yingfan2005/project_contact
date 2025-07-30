@@ -18,7 +18,7 @@ static int FindByName(const struct Contact *ps,char name[MAX_NAME])
    return -1;
 }//é uma fncao para implementar outra funcao declarada no header
 
-/*void SortByName(struct Contact *ps)
+void SortByName(struct Contact *ps)
 {
     int i=0;
     int j=0;
@@ -29,13 +29,31 @@ static int FindByName(const struct Contact *ps,char name[MAX_NAME])
         {
             if(strcmp(ps->data[i].name,ps->data[j].name)>0)
             {
-                tmp=ps[i];
-                ps[i]=ps[j];
-                ps[j]=ps[i];
+                //For name
+                strcpy(tmp.data->name,ps->data[i].name);
+                strcpy(ps->data[i].name,ps->data[j].name);
+                strcpy(ps->data[j].name,tmp.data->name);
+                //For age
+                tmp.data->age=ps->data[i].age;
+                ps->data[i].age=ps->data[j].age;
+                ps->data[j].age=tmp.data->age;
+                //For sex
+                strcpy(tmp.data->sex,ps->data[i].sex);
+                strcpy(ps->data[i].sex,ps->data[j].sex);
+                strcpy(ps->data[j].sex,tmp.data->sex);
+                ///For tele
+                strcpy(tmp.data->tele,ps->data[i].tele);
+                strcpy(ps->data[i].tele,ps->data[j].tele);
+                strcpy(ps->data[j].tele,tmp.data->tele);
+                //For addr
+                strcpy(tmp.data->addr,ps->data[i].addr);
+                strcpy(ps->data[i].addr,ps->data[j].addr);
+                strcpy(ps->data[j].addr,tmp.data->addr);
             }
         }
     }
-}*/
+}
+
 void AddContact(struct Contact *ps)
 {
      if(ps->size==MAX)
