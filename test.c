@@ -7,7 +7,8 @@ void menu()
     printf("3.Search\n");
     printf("4.Modify\n");
     printf("5.Show\n");
-    printf("6.Sort\n");
+    //printf("6.Sort\n");
+    printf("6.Save\n");
     printf("0.Exit\n");
 }
 int main()
@@ -39,10 +40,14 @@ int main()
             case SHOW:
             ShowContact(&con);
             break;
-            case SORT:
+            /*case SORT:
             SortByName(&con);
-            break;
+            break;*/
+            case SAVE:
+            SaveContact(&con);
             case EXIT:
+            SaveContact(&con);
+            DestroyContact(&con);
             printf("Out\n");
             break;
             default:
