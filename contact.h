@@ -1,15 +1,18 @@
 #ifndef CONTACT_H
 #define CONTACT_H
-#define MAX 1000
+//#define MAX 1000
 
 #define MAX_NAME 30
 #define MAX_SEX 10
 #define MAX_TELE 15
 #define MAX_ADDR 30
 
+#define MIN_CAP 3
 #include<stdio.h>
 #include<string.h>
- 
+#include<stdlib.h>
+#include<errno.h>
+
 enum Option
 {
     EXIT,
@@ -18,7 +21,8 @@ enum Option
     SEARCH,
     MODIFY,
     SHOW,
-    SORT
+    //SORT
+    SAVE
 };
 struct PeoInfo
 {
@@ -31,8 +35,9 @@ struct PeoInfo
 
 struct Contact
 {
-    struct PeoInfo data[MAX];
+    struct PeoInfo *data;
     int size;//quantidade de contatos existentes
+    int capacity;  
 };
 void InitContact(struct Contact *ps);
 void AddContact(struct Contact *ps);
@@ -40,5 +45,8 @@ void ShowContact(const struct Contact *ps);
 void  DeleteContact(struct Contact *ps);
 void SearchContact(const struct Contact *ps);
 void ModifyContact(struct Contact *ps);
-void SortByName(struct Contact *ps);
+//void SortByName(struct Contact *ps);
+void DestroyContact(struct Contact *ps);
+void SaveContact(struct Contact *ps);
+void LoadContact(struct Contact *ps);
 #endif
