@@ -1,10 +1,59 @@
 #include "contact.h"
+
 void InitContact(struct Contact *ps)
 {
-    memset(ps->data,0,sizeof(ps->data));
+    ps->data=(struct PeoInfo *)malloc(MIN_CAP*sizeof(struct PeoInfo));
+    if(ps->data==NULL)
+    {
+        return ;
+    }
     ps->size=0;
+    ps->capacity=MIN_CAP;
+     
+    LoadContact(ps);
+
 }
 
+void CheckCap(struct Contact *ps)
+{
+    if(ps->size==ps->capacity)
+    {
+        struct PeoInfo *p=(struct PeoInfo *)realloc(ps->data,(ps->capacity+2)*(sizeof(struct PeoInfo)));
+        if(p!=NULL)
+        {
+            ps->data=p;
+            ps->capacity+=2;
+            printf("Expand capacity with success\n");
+        }
+        else
+        {
+            printf("Expand failed\n");
+        }
+    }
+}
+
+void LoadContact(struct Contact *ps)
+{
+    struct PeoInfo tmp={0};
+    FILE *pfRead=fopen("contact.dat","rb");
+    if(pfRead==NULL)
+    {
+        printf("LoadContact::%s\n",strerror(errno));
+        return ;
+    }
+    while(fread(&tmp,sizeof(struct PeoInfo),1,pfRead))
+    {
+        CheckCap(ps);
+        ps->data[ps->size]=tmp;
+        ps->size++;
+    }
+
+
+
+    fclose(pfRead);
+    pfRead=NULL;
+
+}
 static int FindByName(const struct Contact *ps,char name[MAX_NAME])
 {
     int i=0;
@@ -18,7 +67,7 @@ static int FindByName(const struct Contact *ps,char name[MAX_NAME])
    return -1;
 }//é uma fncao para implementar outra funcao declarada no header
 
-void SortByName(struct Contact *ps)
+/*void SortByName(struct Contact *ps)
 {
     int i=0;
     int j=0;
@@ -52,11 +101,29 @@ void SortByName(struct Contact *ps)
             }
         }
     }
-}
+}*/
+
+
 
 void AddContact(struct Contact *ps)
 {
-     if(ps->size==MAX)
+    CheckCap(ps);
+    printf("Name:->");
+    getchar();
+    scanf("%[^\n]%*c",ps->data[ps->size].name);
+    printf("Age:->");
+    scanf("%d",&(ps->data[ps->size].age));
+    printf("Sex:->");
+    getchar();
+    scanf("%[^\n]%*c",ps->data[ps->size].sex);
+    printf("Tel:->");
+    scanf("%s",ps->data[ps->size].tele);
+    printf("Address:->");
+    getchar();
+    scanf("%[^\n]%*c",ps->data[ps->size].addr);
+    (ps->size)+=1;
+    printf("Added with success\n");
+     /*if(ps->size==MAX)
      {
         printf("Can't add more contact due to maximum memory configured\n");
      }
@@ -77,7 +144,7 @@ void AddContact(struct Contact *ps)
         scanf("%[^\n]%*c",ps->data[ps->size].addr);
         (ps->size)+=1;
         printf("Added with success\n");
-     }
+     }*/
 }
 
 void ShowContact(const struct Contact *ps)
@@ -171,7 +238,33 @@ void ModifyContact(struct Contact *ps)
     }
 }
 
-void SortContact(struct Contact *ps)
+/*void SortContact(struct Contact *ps)
 {
     SortByName(ps);
+}*/
+
+void DestroyContact(struct Contact *ps)
+{
+    free(ps->data);
+    ps->data=NULL;
+}
+
+void SaveContact(struct Contact *ps)
+{
+    FILE *pfWrite=fopen("contact.dat","wb");
+    if(pfWrite==NULL)
+    {
+        printf("SaveContact::%s\n",strerror(errno));
+        return ;
+    }
+    int i;
+    for(i=0;i<ps->size;i++)
+    {
+        fwrite(&(ps->data[i]),sizeof(struct PeoInfo),1,pfWrite);
+
+    }
+
+
+    fclose(pfWrite);
+    pfWrite=NULL;
 }
